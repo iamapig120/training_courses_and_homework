@@ -1,0 +1,118 @@
+<!DOCTYPE HTML>
+<html lang="zh-hans">
+
+<head>
+    <meta charset="utf-8">
+    <title>计算器</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-size: 0;
+        }
+
+        p {
+            font-size: 14px;
+        }
+
+        .btn {
+            text-align: center;
+            color: rgba(0, 0, 0, 0.9);
+            text-decoration: none;
+            font-size: 24px;
+            line-height: calc(64px - 4px);
+            display: inline-block;
+            width: 64px;
+            height: 64px;
+            background-color: rgba(255, 255, 255, 0.4);
+            border: 2px;
+            border-style: solid;
+            border-color: rgba(0, 0, 0, 0);
+            transition: all 0.2s;
+        }
+
+        .clear {
+            font-size: 18px;
+        }
+
+        .btn:hover {
+            background-color: rgba(224, 224, 224, 0.9);
+            border-color: rgba(0, 0, 0, 0.15);
+            transition: all 0s;
+        }
+
+        .inputDiv {
+            display: inline-block;
+            width: calc(64px * 3);
+            height: 64px;
+            line-height: calc(64px - 16px);
+            padding: 8px;
+            /* border: 2px;
+            border-style: solid;
+            border-color: rgba(0, 0, 0, 0); */
+        }
+
+        .inputDiv>div {
+            font-size: 20px;
+            width: fit-content;
+            position: relative;
+            white-space: nowrap;
+        }
+
+        .inputDiv::after {
+            clear: both;
+        }
+
+        .calcDiv {
+            width: calc(64px * 4);
+            height: calc(64px * 6);
+            box-sizing: content-box;
+            border: 2px solid rgba(0, 0, 0, 0.15);
+            position: relative;
+        }
+
+        .calcDiv>* {
+            float: left;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="calcDiv">
+        <div class="inputDiv">
+            <div id="inputText">输入算式</div>
+        </div>
+        <a href="javascript:void(0)" class="btn clear" id="clear">Del</a>
+        <br>
+        <a href="javascript:void(0)" class="btn" id="key(">(</a>
+        <a href="javascript:void(0)" class="btn" id="key)">)</a>
+        <a href="javascript:void(0)" class="btn" id="key%">%</a>
+        <a href="javascript:void(0)" class="btn" id="key÷">÷</a>
+        <br>
+        <a href="javascript:void(0)" class="btn" id="key7">7</a>
+        <a href="javascript:void(0)" class="btn" id="key8">8</a>
+        <a href="javascript:void(0)" class="btn" id="key9">9</a>
+        <a href="javascript:void(0)" class="btn" id="key×">×</a>
+        <br>
+        <a href="javascript:void(0)" class="btn" id="key4">4</a>
+        <a href="javascript:void(0)" class="btn" id="key5">5</a>
+        <a href="javascript:void(0)" class="btn" id="key6">6</a>
+        <a href="javascript:void(0)" class="btn" id="key-">-</a>
+        <br>
+        <a href="javascript:void(0)" class="btn" id="key1">1</a>
+        <a href="javascript:void(0)" class="btn" id="key2">2</a>
+        <a href="javascript:void(0)" class="btn" id="key3">3</a>
+        <a href="javascript:void(0)" class="btn" id="key+">+</a>
+        <br>
+        <a href="javascript:void(0)" class="btn" id="key^">^</a>
+        <a href="javascript:void(0)" class="btn" id="key0">0</a>
+        <a href="javascript:void(0)" class="btn" id="key.">.</a>
+        <a href="javascript:void(0)" class="btn" id="key=">=</a>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+
+</html>

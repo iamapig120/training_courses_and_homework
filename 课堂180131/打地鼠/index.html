@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="zh-hans">
+
+<head>
+    <meta charset="UTF-8">
+    <title>锅打灰太狼</title>
+    <style type="text/css">
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        #outer {
+            position: relative;
+            width: 320px;
+            height: 480px;
+            background: url("imgs/game_bg.jpg") 0 0 no-repeat;
+            margin: 50px auto 0;
+        }
+
+        #score_box {
+            position: absolute;
+            top: 13px;
+            left: 65px;
+            font-weight: bold;
+            font-size: 16px;
+            color: white;
+        }
+
+        #progress_bar {
+            position: absolute;
+            top: 66px;
+            left: 63px;
+            width: 180px;
+            height: 16px;
+            background: url("imgs/progress.png") 0 0 no-repeat;
+        }
+
+        #wolf_box div {
+            position: absolute;
+            width: 108px;
+            height: 101px;
+            background-repeat: no-repeat;
+            background-color: transparent;
+        }
+
+        #menu {
+            position: absolute;
+            top: 200px;
+            left: 0;
+            width: 320px;
+            text-align: center;
+        }
+
+        #start,
+        #handle,
+        #gameOver {
+            display: block;
+            line-height: 50px;
+            font-size: 30px;
+            font-weight: bold;
+            color: #F60;
+            text-shadow: 0 0 5px #FFFF00;
+            text-decoration: none;
+        }
+
+        #gameOver {
+            position: absolute;
+            top: 150px;
+            left: 0;
+            width: 320px;
+            text-align: center;
+            display: none;
+        }
+    </style>
+
+</head>
+
+<body>
+    <div id="outer">
+        <!--这是分数-->
+        <div id="score_box">0</div>
+
+        <!--倒计时进度条-->
+        <div id="progress_bar">
+
+        </div>
+
+        <!-- 狼的容器 -->
+        <div id="wolf_box">
+
+        </div>
+
+        <div id="menu">
+            <a href="javascript:;" id="start">开始</a>
+            <a href="javascript:;" id="handle">作弊模式</a>
+        </div>
+        <div id="gameOver">Game Over!</div>
+    </div>
+    <script src="app.js"></script>
+</body>
+
+</html>

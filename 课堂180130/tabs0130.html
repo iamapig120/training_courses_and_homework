@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+		*{
+			margin: 0;
+			padding: 0;
+		}
+		a{
+			text-decoration: none;
+		}
+		.clearfix:after{
+			content:"";
+			display:block;
+			clear:both;
+		}
+		.wrap{
+			width: 400px;
+			height: 400px;
+			margin:20px auto;
+			text-align:center;
+		}
+		.nav a{
+            margin:0 5px;
+            border:1px solid red;
+            display:inline-block;
+            width: 30px;
+            height: 30px;
+            line-height: 30px
+		}
+		.tabs{
+			height: 370px;
+			width: 400px;
+			overflow:hidden;
+			position:relative;
+		}
+		.tabs .mid{
+			position: absolute;
+			height: 370px;
+			width: 9999px;
+			background-color: blue;
+			left:0;
+			top:0;
+			/*transition:all 0.5s linear;*/
+		}
+		.tabs .mid .item{
+			float:left;
+			width: 400px;
+			height: 370px;
+			line-height: 370px;
+			font-size:50px;
+		}
+		.active{
+			background-color: blue;
+		}
+		.left,.right{
+			width: 0;
+			height: 0;
+			position:absolute;
+			top:50%;
+			margin-top:-20px;
+			border:20px solid gray;
+		}
+		.left{
+			border-top-color:transparent;
+			border-left-color: transparent;
+			border-bottom-color:transparent;
+			left:0;
+		}
+		.right{
+			border-top-color:transparent;
+			border-right-color: transparent;
+			border-bottom-color:transparent;
+			right:0;
+		}
+		
+	</style>
+</head>
+<body>
+	<div class="wrap">
+		<div class="nav">
+			<a href="#" class="active">1</a>
+			<a href="#">2</a>
+			<a href="#">3</a>
+			<a href="#">4</a>
+		</div>
+		<div class="tabs">
+			<div class="mid clearfix">
+				<div class="item">1</div>
+				<div class="item">2</div>
+				<div class="item">3</div>
+				<div class="item">4</div>
+			</div>
+			<div class="left"></div>
+			<div class="right"></div>
+		</div>
+	</div>
+	<script type="text/javascript">
+		!function(){
+				//获取元素
+			var navs=document.querySelectorAll('.nav>a'),
+				items=document.querySelectorAll('.item'),
+				mid=document.querySelector('.mid'),
+				wrap=document.querySelector('.wrap'),
+				last=document.querySelector('.left'),
+				next=document.querySelector('.right');
+			//轮播个数、窗口宽度
+			var len=navs.length,
+			    width=wrap.offsetWidth;
+			//当前索引、自动播放定时器
+			var activeIndex=0,
+			    timer=null,
+			    t=null;
+
+			//click nav 切换
+			for(var i=0;i<len;i++){
+				navs[i].onclick = function(){
+					for(var j=0;j<len;j++){
+						if(this==navs[j]){
+							clearInterval(timer)
+							moveTo(j)
+							autoplay();
+						}
+					}
+				}
+			}
+			next.onclick = function(){
+				clearInterval(timer);
+				toNext();
+				autoplay();
+			}
+
+			last.onclick = function(){
+				clearInterval(timer);
+				toLast()
+				autoplay();
+			}
+
+			//自动播放
+			autoplay();
+			function autoplay(){
+				clearInterval(timer)
+			 	timer=setInterval(function(){toNext()},2000)
+			}
+			 //下一张
+			function toNext(){
+			 	moveTo(activeIndex+1)
+			}
+			//上一张
+			function toLast(){
+			 	moveTo(activeIndex-1)
+			}   
+
+			//移动到某一张
+			function moveTo(index){
+				if(index==activeIndex)return;
+				if(index<0){
+					index=len-1;
+				}else if(index>=len){
+					index=0;
+				}
+				//根据index确定mid的移动距离(突变)
+				//mid.style.left=-width*index+'px';
+				
+				//渐变
+				transition(mid,-width*index);
+				for(var i=0;i<len;i++){
+					if(i==index){
+						navs[i].className="active";
+					}else{
+						navs[i].className="";
+					}
+				}
+				activeIndex=index;
+			}
+
+			/**
+			 * move to destination gradually
+			 * @param  {object} obj  [dom element]
+			 * @param  {Number} end  [destination number]
+			 * @param  {Number} time [time for all steps]
+			 * @param  {Number} stepTime [time for one step]
+			 * @return none
+			 */
+			function transition(obj,end,time,stepTime){
+				time||(time=1000);
+				stepTime||(stepTime=50);
+				var start=obj.offsetLeft,
+					speed=(end-start)/(time/stepTime);
+				clearInterval(t);
+				t=setInterval(function(){
+					start=obj.offsetLeft;
+					obj.style.left=start+speed+'px';
+					if(end>start){
+						if(end<=start){
+							obj.style.left=end+'px';
+							clearInterval(t);
+						}
+					}else{
+						if(end>=start){
+							obj.style.left=end+'px';
+							clearInterval(t);
+						}
+					}
+					//console.log(speed,obj.offsetLeft,end);
+				},stepTime)
+			}
+			}()
+	</script>
+</body>
+</html>

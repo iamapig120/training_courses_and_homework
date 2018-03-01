@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="zh-hans">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Flappy Bird</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no"
+    />
+    <style>
+        * {
+            border: 0;
+            margin: 0;
+            padding: 0;
+        }
+    </style>
+</head>
+
+<body>
+    <script src="avg.js"></script>
+    <script>
+        avg.creaveWindow({
+            width: 336,
+            height: 600,
+            defaultFont: "20px 'Microsoft Yahei',Arial",
+            volumeBGM: 0.5
+        });
+        const fun = () => {
+            avg.wait(1000);
+            console.log(performance.now());
+            avg.run(fun);
+        }
+        fun();
+    </script>
+</body>

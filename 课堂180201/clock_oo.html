@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<span id='clock1'></span>
+	<div id="clock2"></div>
+
+	<script type="text/javascript">
+			function Clock(obj){
+				this.wrap=obj;
+				this.go();
+			}
+			Clock.prototype.go=function(){
+				var _this=this;
+				console.log(_this);
+				setInterval(function(){
+					var now=new Date();
+						year=now.getFullYear(),
+						mth=now.getMonth()+1,
+						date=now.getDate(),
+						hour=now.getHours(),
+						min=now.getMinutes(),
+						sec=now.getSeconds();
+				_this.timeStr=year+'年'+mth+'月'+date+'日 '+hour+'时'+min+'分'+sec+'秒';
+					_this.wrap.innerHTML=_this.timeStr;
+				},1000)
+			}
+			var span=document.querySelector('span'),
+				div=document.querySelector('div')
+			new Clock(span);
+			new Clock(div)
+	</script>
+</body>
+</html>

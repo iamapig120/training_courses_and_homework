@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>锅打灰太狼</title>
+	<style type="text/css">
+		* { margin:0; padding:0;}
+		#outer { position:relative; width:320px; height:480px; background:url("imgs/game_bg.jpg") 0 0 no-repeat; margin:50px auto 0;}
+		#score_box { position:absolute; top:13px; left:65px; font-weight:bold; font-size:16px; color:white;}
+		#progress_bar { position:absolute; top: 66px; left: 63px; width:180px; height:16px; background:url("imgs/progress.png") 0 0 no-repeat; }
+		#wolf_box img { position:absolute; }
+		#menu { position:absolute; top:200px; left:0; width:320px; text-align:center; }
+		#start,
+		#handle,
+		#gameOver { display:block; line-height:50px; font-size:30px; font-weight:bold; color:#F60; text-shadow:0 0 5px #FFFF00; text-decoration:none;}
+		#gameOver { position:absolute; top:150px; left:0; width:320px; text-align:center; display:none;}
+	</style>
+
+</head>
+<body>
+<div id="outer">
+	<div id="score_box">0</div><!--这是分数-->
+  <div id="progress_bar"></div><!--倒计时进度条-->
+  <div id="wolf_box"></div><!-- 狼的容器 -->
+    <div id="menu">
+        <a href="javascript:;" id="start">开始</a>
+        <a href="javascript:;" id="handle">游戏操作说明</a>
+    </div>
+    <div id="gameOver">game over!</div>
+</div>
+<script type="text/javascript">
+	!function(){
+        // 思路:
+        // 需求：点击开始后
+        //       1 菜单隐藏
+        //       2 自动不断生成 灰太狼(定时器)，从固定 的 洞口钻出(定时器)，缩回去(定时器)
+        //       3 若某个洞口已被占用，则不能从该洞口钻出，直到该洞口空出。
+        //       4 击打 灰太狼 加分并显示
+        //       5 灰太狼和小灰灰随机出现，点击小灰灰时 减分
+        //       6 进度条不断 缩短，到0时，游戏结束，不能再得分，不能钻出新的灰太狼
+        
+        //获取元素
+        var start=document.querySelector('#start'),
+            menu=document.querySelector('#menu'),
+            wraper=document.querySelector('#wolf_box'),
+            scoreBox=document.querySelector('#score_box'),
+            progressBar=document.querySelector('#progress_bar'),
+            gameOver=document.querySelector('#gameOver');
+        //全局变量初始化
+        var score=0,
+            time0=300,
+            time=time0;
+            len=progressBar.offsetWidth,
+            timer=null,//倒计时 定时器
+            createTimer=null,//生成灰太狼定时器
+            poses= [
+                    {left:"98px",top:"115px"},
+                    {left:"17px",top:"160px"},
+                    {left:"15px",top:"220px"},
+                    {left:"30px",top:"293px"},
+                    {left:"122px",top:"273px"},
+                    {left:"207px",top:"295px"},
+                    {left:"200px",top:"211px"},
+                    {left:"187px",top:"141px"},
+                    {left:"100px",top:"185px"}
+                    ],
+            //可用的位置索引
+            unused=[0,1,2,3,4,5,6,7,8];
+
+        start.onclick=function(){
+            menu.style.display='none';
+            countDown();
+            createTimer=setInterval(function(){
+                createWolf();
+            },500)
+        }
+
+        //生成灰太狼
+        function createWolf(){
+            if(wraper.children.length>=poses.length) return;
+            var img=new Image();
+            //生成随机可用的位置索引的下标
+            var posIndex=unused[rand(0,unused.length-1)];
+            img.style.left=poses[posIndex].left;
+            img.style.top=poses[posIndex].top;
+            arrDel(unused,posIndex);
+            //随机决定灰太狼/小灰灰
+            var type=Math.random()<0.6?'h':'x';
+            //灰太狼出洞
+            var appearTimer=null,
+                exitTimer=null,
+                hitTimer=null;
+            var index=0;
+            appearTimer=setInterval(function(){
+                img.src='imgs/'+type+index+'.png';
+                index++;
+                if(index>5){
+                    clearInterval(appearTimer);
+                    //进洞
+                    exit();
+                }
+            },100)
+            img.onclick=function(){
+                if(img.clicked) return;
+                img.clicked=true;
+                type=='h'?(score+=10):(score-=20);
+                scoreBox.innerHTML=score;
+                clearInterval(appearTimer);
+                clearInterval(exitTimer)
+                index=6;
+                hitTimer=setInterval(function(){
+                    img.src='imgs/'+type+index+'.png';
+                    index++;
+                    if(index>9){
+                        clearInterval(hitTimer);
+                        index=6;
+                        exit();
+                    }
+                },60)
+            }
+            wraper.appendChild(img);
+
+            //进洞
+            function exit(){
+                exitTimer=setInterval(function(){
+                    index--;
+                    img.src='imgs/'+type+index+'.png';
+                    if(index<=0){
+                        clearInterval(exitTimer);
+                        img.remove();
+                        unused.push(posIndex);
+                    }
+                },100)
+            }
+        }
+
+        //倒计时
+        function countDown(){
+            time--;
+            progressBar.style.width=len*time/time0+'px';
+            if(time>0){
+                timer=setTimeout(function(){
+                    countDown()
+                },100)
+            }else{
+                clearTimeout(timer);
+                clearInterval(createTimer);
+                gameOver.style.display='block';
+            }
+            
+        }
+
+        //从数组中删除某个元素
+        function arrDel(arr,val){
+            var index=arr.indexOf(val);
+            arr.splice(index,1);
+        }
+
+        //生成min到max之间的随机数
+        function rand(min,max){
+            return parseInt(Math.random()*(max-min+1))+min
+        }
+    }()
+</script>
+</body>
+</html>

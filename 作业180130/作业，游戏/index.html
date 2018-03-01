@@ -1,0 +1,63 @@
+!DOCTYPE HTML>
+<html lang="zh-hans">
+
+<head>
+    <meta charset="utf-8">
+    <title>游戏</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-size: 0;
+        }
+        #time, #score{
+            font-size: 24px;
+        }
+        .gamePannel {
+            width: 512px;
+            height: 512px;
+        }
+
+        .gamePannel>div {
+            height: 100%;
+            width: 100%;
+            /* flex-direction: row-reverse; */
+        }
+
+        .gamePannel>div>div {
+            /* display: flex; */
+            float: left;
+            width: max-content;
+            /* flex-direction: column; */
+            flex-grow: 1;
+            flex-shrink: 1;
+        }
+
+        .gamePannel>div>div>img {
+            /* display: flex; */
+            flex-grow: 1;
+            flex-shrink: 1;
+        }
+        .btn {
+            font-size: 24px;
+            background-color: rgb(49, 131, 255);
+            color: #FFFFFF;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="time">
+    </div>
+    <div id="score">
+    </div>
+    <div id="start" class="btn">开始</div>
+    <div id="game" class="gamePannel">
+    </div>
+
+    <script src="app.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>2048</title>
+    <script src="avg.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no"
+    />
+    <style>
+        * {
+            border: 0;
+            margin: 0;
+            padding: 0;
+        }
+    </style>
+</head>
+
+<body>
+    <script>
+        avg.creaveWindow({
+            width: 540,
+            height: 960,
+            //backgroundColor: "#1099bb",
+            defaultFont: "20px Arial,'Microsoft Yahei'"
+            //volumeBGM : 0.7,
+            //volumeSE : 0.7,
+            //volumeVoice : 0.7,
+            //defaultFontColor: "#AAA"
+            //refresh: 100 //刷新频率（毫秒）
+        });
+        avg.playBGM({
+            src: "audio/Cycles.mp3"
+            //默认 volume:1
+        });
+        avg.loadImage({ layer: 1, src: "image/background/logo.png", alpha: 0 });
+        avg.move({ layer: 1, alpha: 1 }, 1000);
+        avg.wait(3000);
+        avg.move({ layer: 1, alpha: 0 }, 1000);
+
+        /**
+         * @type {HTMLElement}
+         */
+        const dom = avg.getDOM();
+        
+        //dom.addEventListener("mousemove", mouseMoveFun);
+        avg.runFunction(function () {
+            requestAnimationFrame(function raf(t) {
+                avg.loadText({
+                    layer: 16,
+                    text: `${avg.mouse.X}px,${avg.mouse.Y}px`,
+                    font: "12px Arial,'Microsoft Yahei'",
+                    color: "#FFFFFF",
+                    x: 20,
+                    y: 22,
+                    alpha: 1
+                });
+                avg.waitByFrame(1);
+                requestAnimationFrame(raf);
+            });
+        });
+
+        avg.runFunction(function () {
+            console.log("runSuccess");
+        });
+
+    </script>
+</body>

@@ -1,0 +1,155 @@
+<!DOCTYPE HTML>
+<html lang="zh-hans">
+
+<head>
+    <meta charset="utf-8">
+    <title>轮播</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-size: 0;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        body {
+            width: 100vw;
+            height: 100vh;
+        }
+
+        .loopPlay {
+            display: inline-block;
+            border: 0;
+            width: 50%;
+            height: 50%;
+            /* border: 2px solid rgba(0, 0, 0, 0.15); */
+            position: relative;
+            overflow: hidden;
+        }
+
+        .loopPlay>div.img-set {
+            min-width: 100%;
+            width: max-content;
+            height: 100%;
+            position: relative;
+            transition: left 0.5s;
+            white-space: nowrap;
+        }
+
+        .loopPlay>div.img-set>div {
+            display: inline-block;
+            height: 100%;
+            width: 100%;
+            background-size: cover;
+        }
+
+        .loopPlay>div.img-set>div>a {
+            display: block;
+            height: 100%;
+            width: 100%;
+        }
+
+        .loopPlay>div.title-set {
+            width: 100%;
+            height: 32px;
+            position: relative;
+            bottom: 32px;
+            background: linear-gradient(transparent, rgba(0, 0, 0, .5));
+        }
+
+        .loopPlay>div.title-set>div {
+            opacity: 0;
+        }
+
+        .loopPlay>div.title-set>div>a {
+            padding-left: 16px;
+        }
+
+        .loopPlay>div.title-set>div:first-child {
+            opacity: 1;
+        }
+
+        .loopPlay>div.title-set * {
+            width: 100%;
+            height: 100%;
+            line-height: 32px;
+            font-size: 16px;
+            color: #FFF;
+            position: absolute;
+            transition: opacity 0.3s;
+        }
+
+        .loopPlay>div.trig-set {
+            width: max-content;
+            height: 21px;
+            position: absolute;
+            white-space: nowrap;
+            bottom: 6px;
+            right: 20px;
+            z-index: 5;
+        }
+
+        .loopPlay>div.trig-set>span {
+            display: inline-block;
+            width: 18px;
+            height: 18px;
+            background-image: url(imgs/icons.png);
+            background-position: -855px -790px;
+            background-color: transparent;
+            cursor: pointer;
+            margin: 0 4px;
+        }
+
+        .loopPlay>div.trig-set>span:hover {
+            background-position: -919px -790px;
+        }
+
+        .loopPlay>div.trig-set>span.on {
+            background-position: -855px -727px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="loopPlay">
+        <div>
+            <div>{"img":"44934897_p0.jpg","text":"崩坏学园2-Kiana","url":"http://www.mihoyo.com/"}</div>
+            <div>{"img":"60160670_p0.png","text":"崩坏学园2-无量塔姬子","url":"http://www.mihoyo.com/"}</div>
+            <div>{"img":"67010409_p0.png","text":"赤城 加賀 P-ID 67010409","url":"https://zh.moegirl.org/%E8%88%B0%E9%98%9FCollection"}</div>
+            <div>{"img":"66940368_p0.jpg","text":".hack//G.U. P-ID 66940368","url":"#"}</div>
+        </div>
+    </div>
+    <div class="loopPlay">
+        <div>
+            <div>{"img":"44934897_p0.jpg","text":"崩坏学园2-Kiana","url":"http://www.mihoyo.com/"}</div>
+            <div>{"img":"60160670_p0.png","text":"崩坏学园2-无量塔姬子","url":"http://www.mihoyo.com/"}</div>
+            <div>{"img":"67010409_p0.png","text":"赤城 加賀 P-ID 67010409","url":"https://zh.moegirl.org/%E8%88%B0%E9%98%9FCollection"}</div>
+            <div>{"img":"66940368_p0.jpg","text":".hack//G.U. P-ID 66940368","url":"#"}</div>
+        </div>
+    </div>
+    <div class="loopPlay">
+        <div>
+            <div>{"img":"44934897_p0.jpg","text":"崩坏学园2-Kiana","url":"http://www.mihoyo.com/"}</div>
+            <div>{"img":"60160670_p0.png","text":"崩坏学园2-无量塔姬子","url":"http://www.mihoyo.com/"}</div>
+            <div>{"img":"67010409_p0.png","text":"赤城 加賀 P-ID 67010409","url":"https://zh.moegirl.org/%E8%88%B0%E9%98%9FCollection"}</div>
+            <div>{"img":"66940368_p0.jpg","text":".hack//G.U. P-ID 66940368","url":"#"}</div>
+        </div>
+    </div>
+    <div class="loopPlay">
+        <div>
+            <div>{"img":"44934897_p0.jpg","text":"崩坏学园2-Kiana","url":"http://www.mihoyo.com/"}</div>
+            <div>{"img":"60160670_p0.png","text":"崩坏学园2-无量塔姬子","url":"http://www.mihoyo.com/"}</div>
+            <div>{"img":"67010409_p0.png","text":"赤城 加賀 P-ID 67010409","url":"https://zh.moegirl.org/%E8%88%B0%E9%98%9FCollection"}</div>
+            <div>{"img":"66940368_p0.jpg","text":".hack//G.U. P-ID 66940368","url":"#"}</div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+
+</html>

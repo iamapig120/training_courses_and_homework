@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>Flappy bird</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+		<link rel="stylesheet" href="css/bird.css" />
+	</head>
+	<body>
+	<div class="fb_wrap" id="fbWrap">
+		<!-- 游戏初始 -->
+		<div class="game_start">
+			<div class="scoring" id="scoring">
+				<img src="images/0.jpg" alt="" />
+			</div>
+			<div class="head" id="head">
+				<img src="images/head.jpg" alt="" />
+				<span></span>
+			</div>
+			<div class="btns" id="btns">
+				<span class="start_btn" id="start"></span>
+				<span class="submit_btn" id="submit"></span>
+			</div>
+		</div>
+
+		<!-- 移动条 -->
+		<div class="slider">
+			<img src="images/slider.jpg" alt="" />
+			<img src="images/slider.jpg" alt="" />
+		</div>
+
+		<!-- 鸟 -->
+		<div class="bird" id="flappyBird">
+			<img src="images/bird0.png" alt="" />
+		</div>
+
+		<!-- 管道 -->
+		<ul class="pipe_wrap" id="pipeWrap">
+			<!-- <li class="pipe" style="left:200px;">
+				<div class="top_pipe">
+					<div style="height:120px;"></div>
+				</div>
+				<div class="bottom_pipe">
+					<div style="height:180px;"></div>
+				</div>
+			</li> -->
+		</ul>
+
+		<!-- 游戏结束 -->
+		<div class="gameover_wrap">
+			<div class="g_img" id="gameover">
+				<img src="images/game_over.jpg" alt="" />
+			</div>
+			<div class="g_msg" id="message">
+				<span id="endScoring">1</span>
+				<em id="oldScoring">2</em>
+			</div>
+			<div class="g_btn" id="okBtn">
+				<img src="images/ok.jpg" alt="" />
+			</div>
+		</div>
+		
+		<!-- 游戏音乐 -->
+		<audio id="gameMusic" loop src="source/game_music.mp3"></audio>
+		<audio id="bullet" src="source/bullet.mp3"></audio>
+		<audio id="gameOverMusic" src="source/game_over.mp3"></audio>
+	</div>
+	<script type="text/javascript" src="js/global.js"></script>
+	<script type="text/javascript">
+	!function(){
+		//思路：
+		//1 点击开始按钮，出现小鸟，重复生成管道，管道移动
+		//2 让小鸟有自然下落(加速)效果(定时器)，点击游戏区域，让小鸟上升(减速)
+		//3 在管道移动过程中插入 加分 逻辑，显示加分
+		//4 在小鸟出现及管道生成之间加入碰撞检测（定时器）
+		//	4.1 碰撞检测包含 与管道碰撞以及与天花板或地面碰撞，只要碰到，gameover
+		//5 加入gameover逻辑，出现动画效果，展示当前得分及历史最高得分，出现ok button.
+		
+		var wrap = $('#fbWrap');
+		var pipeWrap = $('#pipeWrap');
+		var start = $('#start');
+		var startWrap = $('.game_start');
+		var bird = $('#flappyBird');
+		var birdImg = $('#flappyBird>img');
+		var pipeTimer = null;
+		var downTimer = null;
+		var upTimer = null;
+		var crashTimer = null;
+		var speed = 0;  //小鸟初始速度
+		var maxSpeed = 8;//小鸟最大速度
+		var score = 0;
+		var scoreWrap = $('#scoring');
+
+		var gameMusic = $('#gameMusic');
+		var flyMusic = $('#bullet');
+		var gameoverMusic = $('#gameOverMusic');
+		var gameIsOver = false;//标识游戏是否结束
+
+		start.onclick = function(e){
+			//游戏开始主程序
+			gameStart();
+			//清除冒泡
+			clearBuble(e);
+			wrap.onclick = function(){
+				jump();
+			}
+		}
+
+		//清除冒泡
+		function clearBuble(e){
+			var e = e||window.event;
+			if(e.stopPropagation){
+				e.stopPropagation();
+			}else{
+				e.cancelBubble = true;
+			}
+		}
+
+		//游戏主程序
+		function gameStart(){
+			$('#head').style.display = 'none';
+			$('#btns').style.display = 'none';
+			bird.style.display = 'block';
+			gameMusic.play();
+			//小鸟自由下落
+			downTimer = setInterval(down,30);
+			crashTimer = setInterval(crashTest,17);
+			pipeTimer = setInterval(createPipe, 3000);
+		}
+
+		//碰撞检测
+		function crashTest(){
+			var pipes = pipeWrap.children;
+			for(var i=0;i<pipes.length;i++){
+				var l2 = pipes[i].offsetLeft;
+				var r2 = l2+pipes[i].offsetWidth;
+				var l1 = bird.offsetLeft;
+				var r1 = l1+bird.offsetWidth;
+				//若小鸟与管道在水平方向相交，则进行碰撞检测；
+				if(l1<r2&&r1>l2){
+					crash1(pipes[i].children[0]);
+					crash1(pipes[i].children[1]);
+				}
+			}
+			crash2();
+		}
+
+		//判断小鸟和管道是否碰撞
+		function crash1(obj){
+			//bird参数
+			var t1 = bird.offsetTop;
+			var b1 = t1+bird.offsetHeight;
+			//obj参数
+			var t2 = obj.offsetTop;
+			var b2 = t2+obj.offsetHeight;
+			//判断碰撞
+			if(t1<b2 && b1>t2){
+				gameOver();
+			}
+		}
+
+		//判断小鸟和顶部或底部是否碰撞
+		function crash2(){
+			var t1 = bird.offsetTop;
+			var b1 = t1+bird.offsetHeight;
+			if(t1<=0 || b1>=420){
+				gameOver();
+			}
+		}
+		
+		//自由下落
+		function down(){
+			speed += 0.5; 
+			if(speed > maxSpeed)
+				speed = maxSpeed;
+			bird.style.top = bird.offsetTop+speed+'px';
+		}
+
+		//小鸟上升
+		function up(){
+			speed -=0.7;  //减速运动
+			if(parseInt(speed)<=0){
+				birdImg.src = "images/down_bird1.png";
+				clearInterval(upTimer);
+				downTimer = setInterval(down,30);
+			}
+			bird.style.top = bird.offsetTop - speed+'px';	
+		}
+
+		//小鸟跳跃
+		function jump(){
+			clearInterval(downTimer);
+			clearInterval(upTimer);
+			if(!gameIsOver){
+				bullet.play(); 
+				speed = 6;
+				birdImg.src = "images/up_bird1"+".png";
+				upTimer = setInterval(up, 30);
+				bird.style.top = bird.offsetTop - speed + "px";
+			}	
+			console.log(bird.offsetTop)
+		}
+
+		//显示分数
+		function showScore(){
+			scoreWrap.innerHTML = '';
+			var scoreStr = String(score);
+			for(var i=0;i<scoreStr.length;i++){
+				var img = new Image();
+				img.src = 'images/'+scoreStr.charAt(i)+'.jpg';
+				scoreWrap.appendChild(img);
+			}
+		}
+
+		//创建并移动管道
+		function createPipe(){
+			var pipe = document.createElement('li');
+			var topHeight = rand(30,80);
+			var bottomHeight = 110-topHeight;
+			pipe.innerHTML = '<div class="top_pipe"><div style="height:'+topHeight+'px;"></div></div><div class="bottom_pipe"><div style="height:'+bottomHeight+'px;"></div></div>';
+			pipe.className = 'pipe';
+			//初始状态pipe在wrap的最右侧
+			var maxLeft = wrap.offsetWidth
+			pipe.style.left = maxLeft+'px';//注意'px'
+			pipeWrap.appendChild(pipe);
+			//管道移动
+			var minLeft = -pipe.offsetWidth;
+			var moveTimer = null;
+			var scoreAdded = 0;//标识是否加分
+			moveTimer =setInterval(function(){
+				maxLeft -= 2;
+				pipe.style.left = maxLeft+'px';
+				if(maxLeft<bird.offsetLeft-pipe.offsetWidth && !scoreAdded){
+					score++;
+					showScore();
+					scoreAdded = 1;
+				}
+				if(maxLeft<minLeft){
+					clearInterval(moveTimer);
+					pipe.remove();
+				}
+			},30)
+		}
+
+		function gameOver(){
+			//清除所有定时器
+			clearTimers();
+			gameMusic.pause();
+			gameOverMusic.play();
+			var gameover = $("#gameover");
+			var message = $("#message");
+			var endScoring = $("#endScoring");
+			var oldScoring = $("#oldScoring");
+			var okBtn = $('#okBtn');
+			gameover.style.top = "120px"; //gameover
+			message.style.top = "180px"; //当前分数和历史分数
+
+			endScoring.innerHTML = score; //显示结束分数
+			if (localStorage.getItem("bestScore") < score) {
+				localStorage.setItem("bestScore", score);
+				oldScoring.innerHTML = score;
+			} else {
+				oldScoring.innerHTML = localStorage.getItem("bestScore");
+			}
+			gameoverDown(); //小鸟挂掉动画
+			gameIsOver = true;
+
+			okBtn.style.left = "118px"; //OK按钮
+			okBtn.onclick = function(e){
+				location.reload();
+				clearBuble(e);
+			}
+		}
+
+		//小鸟挂掉
+		function gameoverDown() {
+			bird.style.webkitTransition = "all 0.5s linear";
+			birdImg.src = "images/down_bird1.png";
+			bird.style.top = "392px";
+		}
+
+		//清除所有定时器
+		function clearTimers(){
+			//获取当前最大定时器编号
+			var end = setInterval(function(){},20);
+			for(var i=1;i<=end;i++){
+				clearTimeout(i);
+			}
+		}
+
+		function rand(min,max){
+			return min+Math.round(Math.random()*(max-min));
+		}
+	}()
+	</script>
+</body>
+</html>

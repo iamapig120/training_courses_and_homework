@@ -1,0 +1,263 @@
+* {
+  border: 0;
+  margin: 0;
+  padding: 0;
+  /* font-size: 0; */
+  box-sizing: border-box;
+  -webkit-app-region: drag;
+  font-family: "微软雅黑", Arial, sans-serif;
+  user-select: none;
+}
+body {
+  /* margin: 10px; */
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  width: 432px;
+  height: 330px;
+  /* border-radius: 2px 2px 4px 4px; */
+  border-radius: 2px;
+  position: fixed;
+  top: 10px;
+  left: 10px;
+  opacity: 0;
+}
+input,
+label,
+.link {
+  font-size: 12px;
+  height: 20px;
+  -webkit-app-region: no-drag;
+}
+#topWindow,
+#loginAnime {
+  width: 432px;
+  height: 182px;
+}
+#loginAnime {
+  border-radius: 2px 2px 0 0;
+}
+#mainWindow {
+  width: 432px;
+  height: 148px;
+  background-color: #edf5fb;
+  padding: 12px 0;
+  border-radius: 0 0 2px 2px;
+  text-align: center;
+}
+#mainWindow > *,
+#mainMiddle * {
+  display: block;
+  float: left;
+}
+
+/*
+ 登录状态
+*/
+#mainWindow.logining > * {
+  display: none;
+  float: none;
+}
+#mainWindow.logining > #avatar {
+  display: block;
+  transition: all 0.3s;
+  margin: 0 176px 10px;
+}
+#mainWindow.logining > #loginBtn {
+  display: block;
+  margin: 0 auto;
+}
+
+#checkboxForms {
+  width: 100%;
+  font-size: 12px;
+  display: block;
+  height: 31px;
+  font-weight: 400;
+  color: #888;
+}
+#checkboxForms input[type="checkbox"] {
+  height: 0;
+  width: 0;
+}
+#checkboxForms > label {
+  display: block;
+  height: 14px;
+  margin-top: 5px;
+}
+#checkboxForms > label:before {
+  content: "\00a0";
+  margin: 0 2px 0 0;
+  display: inline-block;
+  height: 11px;
+  width: 11px;
+  border: 1px solid #bbb;
+  background-color: #fff;
+  border-radius: 1px;
+  /* margin-top: 8px; */
+  position: relative;
+  top: 3px;
+}
+#checkboxForms > label:hover:before {
+  border-color: #1583dd;
+}
+#checkboxForms > label:active:before {
+  border-color: #1583dd;
+  box-shadow: inset 0px 0px 2px #1583dd;
+}
+#checkboxForms > label.select:before {
+  background-image: url("../content/img/selected.png");
+  background-position: 0;
+  background-repeat: no-repeat;
+  background-size: 11px, 11px;
+  color: #fff;
+  background-color: #3076c1;
+  border-color: transparent;
+}
+#checkboxForms > label.select:hover:before {
+  background-color: #278cde;
+  border-color: transparent;
+}
+#checkboxForms > label.select:active:before {
+  background-color: #276bb3;
+  border-color: transparent;
+  box-shadow: 0;
+}
+#checkboxForms > label:last-child {
+  float: right;
+}
+#loginBtn {
+  cursor: default;
+  display: block;
+  width: 192px;
+  height: 30px;
+  text-align: center;
+  background-color: #09a3dc;
+  border-radius: 4px;
+  color: #eff8ff;
+  font-weight: 400;
+  font-size: 12px;
+  padding: 0;
+  margin: 0 136px;
+  line-height: 30px;
+  letter-spacing: 10px;
+  transition-property: background-color;
+  transition-duration: 0.2s;
+  transition-timing-function: ease-out;
+  -webkit-app-region: no-drag;
+}
+#loginBtn:hover {
+  background-color: #3cc3f5;
+}
+#loginBtn:active {
+  transition-duration: 0;
+  padding: 2px 0 0 4px;
+  background-color: #098cbc;
+}
+#mainRight {
+  width: 80px;
+}
+#mainRight > .link {
+  display: block;
+  /* width: calc(100%-24px); */
+  height: 14px;
+  font-size: 12px;
+  color: #49d;
+  text-decoration: none;
+  float: left;
+  margin: 7px 10px 9px;
+  cursor: pointer;
+}
+#mainRight > .link:hover {
+  color: #6be;
+}
+#loginBG {
+  position: absolute;
+  top: 0;
+  left: 0;
+  top: 0;
+  left: 0;
+}
+#mimWinBtn,
+#closeWinBtn {
+  font-family: Arial, sans-serif;
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 28px;
+  height: 26px;
+  display: block;
+  font-size: 24px;
+  font-weight: 400;
+  color: #fff;
+  text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.2);
+  cursor: default;
+  text-align: center;
+  transition-property: background-color;
+  transition-duration: 0.2s;
+  transition-timing-function: ease-out;
+  -webkit-app-region: no-drag;
+}
+#mimWinBtn:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+#closeWinBtn:hover {
+  background-color: #d53;
+}
+#mimWinBtn:active,
+#closeWinBtn:active {
+  padding: 1px 0 0 1px;
+  transition-duration: 0;
+}
+#closeWinBtn:active {
+  background-color: #a42;
+}
+#mimWinBtn {
+  right: 28px;
+}
+#closeWinBtn {
+  border-radius: 0 2px 0 0;
+}
+#mainMiddle {
+  width: 192px;
+  /* height: 80px; */
+}
+#avatar {
+  height: 80px;
+  width: 80px;
+  margin: 0 12px 10px 44px;
+  border-radius: 50%;
+}
+.inputForm {
+  height: 30px;
+  width: 192px;
+  font-size: 12px;
+  border: 1px solid #dddddd;
+  border-radius: 4px 4px 0 0;
+  padding: 8.5px;
+  user-select: text;
+  /* font-weight: 300; */
+}
+.inputForm::-webkit-input-placeholder {
+  color: #999;
+}
+#password {
+  height: 29px;
+  border-top: 0;
+  border-radius: 0 0 4px 4px;
+  /* font-size: 13px;
+  font-weight: 900;
+  letter-spacing: 4px; */
+}
+.inputForm:focus {
+  outline: 0;
+}
+#mainMiddle.select1 > #userName {
+  border-color: #27d;
+  box-shadow: inset 0px 0px 2px #aaa;
+}
+#mainMiddle.select2 > #userName {
+  border-bottom-color: #27d;
+}
+#mainMiddle.select2 > #password {
+  border-color: #27d;
+  box-shadow: inset 0px 0px 2px #aaa;
+}
