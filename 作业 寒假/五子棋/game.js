@@ -198,10 +198,10 @@ class Gobang {
                     form[i][j].color > 0
                 ) {
                     const testAs = num =>
-                        form[i][j].top >= num ||
-                        form[i][j].left >= num ||
-                        form[i][j].leftTop >= num ||
-                        form[i][j].rightTop >= num;
+                        form[i][j].top === num ||
+                        form[i][j].left === num ||
+                        form[i][j].leftTop === num ||
+                        form[i][j].rightTop === num;
                     if (testAs(2) && this.BGMPlaying === 1) {
                         this.audioBGM1.pause();
                         this.audioBGM2.play();
