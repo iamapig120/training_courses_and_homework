@@ -28,6 +28,8 @@ class Gobang {
         this.dom = box;
         //第X步
         this.step = 0;
+        //下棋音效
+        const AUDIO_DROP = new Audio("audio/drop.mp3");
         /**
          * 添加一个棋子
          */
@@ -74,6 +76,8 @@ class Gobang {
                         _this.players[(_this.step - 1) % _this.players.length]
                             .piece
                     })`;
+                    AUDIO_DROP.currentTime = 0;
+                    AUDIO_DROP.play();
                     if (_this.test()) {
                         _this.win(this.obj.color);
                     }
@@ -191,13 +195,29 @@ class Gobang {
                 }
                 if (
                     Number.isInteger(form[i][j].color) &&
-                    form[i][j].color > 0 &&
-                    (form[i][j].top >= 4 ||
-                        form[i][j].left >= 4 ||
-                        form[i][j].leftTop >= 4 ||
-                        form[i][j].rightTop >= 4)
+                    form[i][j].color > 0
                 ) {
-                    return form[i][j].color;
+                    const testAs = num =>
+                        form[i][j].top >= num ||
+                        form[i][j].left >= num ||
+                        form[i][j].leftTop >= num ||
+                        form[i][j].rightTop >= num;
+                    if (testAs(2) && this.BGMPlaying === 1) {
+                        this.audioBGM1.pause();
+                        this.audioBGM2.play();
+                        this.BGMPlaying++;
+                    }
+                    if (testAs(3) && this.BGMPlaying === 2) {
+                        this.audioBGM2.pause();
+                        this.audioBGM3.play();
+                        this.BGMPlaying++;
+                    }
+                    if (testAs(4)) {
+                        this.audioBGM3.pause();
+                        this.audioWin.play();
+                        this.BGMPlaying++;
+                        return form[i][j].color;
+                    }
                 }
             }
         }
@@ -235,6 +255,15 @@ class Gobang {
             this.step = 0;
             this.players = players;
         }
+        this.audioBGM1 = new Audio("audio/Normal.mp3");
+        this.audioBGM1.loop = true;
+        this.audioBGM2 = new Audio("audio/Exciting1.mp3");
+        this.audioBGM2.loop = true;
+        this.audioBGM3 = new Audio("audio/Exciting2.mp3");
+        this.audioBGM3.loop = true;
+        this.audioBGM1.play();
+        this.audioWin = new Audio("audio/win.mp3");
+        this.BGMPlaying = 1;
     }
 }
 
@@ -243,8 +272,20 @@ let game = new Gobang({
     height: 900, //高度
     dom: document.documentElement
 });
+const audioBGM0 = new Audio("audio/welcome.mp3");
+audioBGM0.loop = true;
 document.documentElement.addEventListener("keydown", e => {
     if (e.keyCode === 32 || e.keyCode === 13) {
+        audioBGM0.pause();
         game.start();
     }
 });
+let flag = true;
+const mouseMoveFun = e => {
+    if (flag) {
+        flag = false;
+        document.documentElement.removeEventListener("mousemove", mouseMoveFun);
+        audioBGM0.play();
+    }
+};
+document.documentElement.addEventListener("mousemove", mouseMoveFun);
