@@ -60,28 +60,7 @@ class Gobang {
             newCase.step = step;
             newCase.obj = obj;
             newCase.addEventListener("click", function(e) {
-                if (_this.gaming && !this.step) {
-                    _this.step++;
-                    this.step = _this.step;
-                    this.innerText = _this.step;
-                    this.obj.color =
-                        _this.players[
-                            (_this.step - 1) % _this.players.length
-                        ].id;
-                    this.style.color =
-                        _this.players[
-                            (_this.step - 1) % _this.players.length
-                        ].color;
-                    this.style.backgroundImage = `url(${
-                        _this.players[(_this.step - 1) % _this.players.length]
-                            .piece
-                    })`;
-                    AUDIO_DROP.currentTime = 0;
-                    AUDIO_DROP.play();
-                    if (_this.test()) {
-                        _this.win(this.obj.color);
-                    }
-                }
+                _this.dropAt(this);
             });
             box.appendChild(newCase);
         }
@@ -165,6 +144,27 @@ class Gobang {
                 }
             }
         );
+    }
+    dropAt(dom) {
+        if (this.gaming && !dom.step) {
+            this.step++;
+            dom.step = this.step;
+            dom.innerText = this.step;
+            dom.obj.color = this.players[
+                (this.step - 1) % this.players.length
+            ].id;
+            dom.style.color = this.players[
+                (this.step - 1) % this.players.length
+            ].color;
+            dom.style.backgroundImage = `url(${
+                this.players[(this.step - 1) % this.players.length].piece
+            })`;
+            this.AUDIO_DROP.currentTime = 0;
+            this.AUDIO_DROP.play();
+            if (this.test()) {
+                this.win(dom.obj.color);
+            }
+        }
     }
     /**
      * 测试是否有人获胜
