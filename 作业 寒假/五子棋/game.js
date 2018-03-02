@@ -29,7 +29,7 @@ class Gobang {
         //第X步
         this.step = 0;
         //下棋音效
-        const AUDIO_DROP = new Audio("audio/drop.mp3");
+        this.AUDIO_DROP = new Audio("audio/drop.mp3");
         /**
          * 添加一个棋子
          */
@@ -145,7 +145,14 @@ class Gobang {
             }
         );
     }
+    /**
+     * 在指定位置下棋
+     * @param {HTMLDivElement | number} dom 被下棋的DOM对象或这个对象的下标
+     */
     dropAt(dom) {
+        if (Number.isInteger(dom)) {
+            dom = this.dom.getElementsByTagName("div")[dom];
+        }
         if (this.gaming && !dom.step) {
             this.step++;
             dom.step = this.step;
