@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<input type='file' id='file1' />
+	<img  id='test_img' />
+	<script type="text/javascript">
+		var file = document.querySelector('#file1');
+		var img = document.querySelector('#test_img');
+		file.onchange = function(){
+		  console.log(file.files[0]);
+			var reader = new FileReader();
+			reader.onload = function(evt) {
+				img.setAttribute("src", evt.target.result); //设置预览路径
+ 			}
+			reader.readAsDataURL(file.files[0])
+		}
+	</script>
+</body>
+</html>

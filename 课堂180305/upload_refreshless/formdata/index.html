@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+		#a2{
+			width: 300px;
+			height: 30px;
+			border:1px solid black;
+		}
+		#a3{
+			width:0;
+			height: 100%;
+			background: green;
+		}
+	</style>
+</head>
+<body>
+	<!-- <form action="./demo.php" id="a1" > -->
+		<input type="text" name='test' placeholder='随便输入'>
+		<input type="file" name="pic">	
+		<input type="submit" value="提交" id="a4">
+		<span id="a5"></span>
+		<div id="a2">
+			<div id="a3"></div>
+		</div>
+	<!-- </form> -->
+	<script type="text/javascript">
+	var up=document.getElementById('a1')
+	document.getElementById('a4').onclick=function(evt){
+		var fm=new FormData();
+		var fileO = document.querySelector('[name="pic"]');
+		fm.append("pic", fileO.files[0]);
+		var xhr=new XMLHttpRequest();
+		xhr.upload.onprogress=function(ev){
+			var load=ev.loaded;
+			var total=ev.total;
+			var per =Math.floor((load/total)*100)+"%";
+			document.getElementById('a3').style.width=per;
+		}
+		xhr.onreadystatechange=function(){
+			if(xhr.readyState==4){
+				document.getElementById('a5').innerHTML=xhr.responseText;
+			}
+		}
+		xhr.open("post","./demo.php");
+		xhr.send(fm);
+		evt.preventDefault();
+		return false;
+	}
+	</script>
+</body>
+</html>

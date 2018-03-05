@@ -1,0 +1,53 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>ajaxfileupload图片上传控件</title>
+</head>
+<script type="text/javascript" src="js/jquery-1.7.2.js"></script>
+<script type="text/javascript" src="js/ajaxfileupload.js"></script>
+<script language="javascript">
+  $(function(){   
+      $("#fileToUpload").live('change',function(){     
+         //加载图标   
+         /* $("#loading").ajaxStart(function(){
+            $(this).show();
+         }).ajaxComplete(function(){
+            $(this).hide();
+         });*/
+          //上传文件
+          $.ajaxFileUpload({
+            url:'upload.php',//处理图片脚本
+            secureuri :false,
+            fileElementId :'fileToUpload',//file控件id
+            dataType : 'json',
+            success : function (data, status){
+                        if(data.code != '1000'){
+                            $('#msg').html(data.msg).css('color','red');
+														$('#preview').html('');
+                        }else{
+                            $('#msg').html(data.msg).css('color','green');
+                            $('#preview').html('<img src="'+data.img+'" />');
+														$('#img').val(data.fileName);
+                        }
+            },
+            error: function(data, status, e){
+                alert(e);
+            }
+			})
+			return false;
+    }) 
+  })
+</script>
+
+
+<body>
+<form>
+<input id="fileToUpload" type="file" size="20" name="fileToUpload" class="input">
+<input type='hidden' id='img' name='img' />
+<span id="msg">要求文件类型为jpg/jpeg/gif/png,大小不超过2M</span>
+<div id="preview"></div>
+</form>
+<!--<img id="loading" src="loading.jpg" style="display:none;">-->
+</body>
+</html>

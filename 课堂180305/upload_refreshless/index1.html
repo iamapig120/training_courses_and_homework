@@ -1,0 +1,37 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>jqueryform文件上传</title>
+</head>
+<script type="text/javascript" src="js/jquery-1.7.2.js"></script>
+<script type="text/javascript" src="js/jquery.form.js"></script>
+<script language="javascript">
+jQuery(function(){   
+    $("#fileToUpload").change(function(){ 
+  		$('#form1').ajaxSubmit({
+			type:"POST",
+			dataType:'json',
+			success:function(data){
+				if(data.code==1000){
+					$('#preview').html('<img src="'+data.img+'">')
+				}else{
+					$('#preview').html(data.msg).css('color','red');
+				}
+			}
+		});
+	})
+})
+
+</script>
+
+<body>
+<form id="form1" method="post" action='upload.php' enctype="multipart/form-data">
+<input id="fileToUpload" type="file" size="20" name="fileToUpload" class="input">
+<div id='preview'>要求文件类型为jpg/jpeg/gif/png,大小不超过2M<div>
+<!--<button id="buttonUpload">上传</button>-->
+</form>
+<!--<img id="loading" src="loading.jpg" style="display:none;">-->
+</body>
+</html>
+

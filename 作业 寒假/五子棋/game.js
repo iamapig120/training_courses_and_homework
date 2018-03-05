@@ -30,6 +30,9 @@ class Gobang {
         this.step = 0;
         //下棋音效
         this.AUDIO_DROP = new Audio("audio/drop.mp3");
+        //宽高
+        this.x = 15;
+        this.y = 15;
         /**
          * 添加一个棋子
          */
@@ -56,6 +59,7 @@ class Gobang {
             top: ${y}px;
             font-size: ${height / 2}px;
             line-height: ${height}px;
+            box-sizing: border-box;
             `;
             newCase.step = step;
             newCase.obj = obj;
@@ -93,28 +97,28 @@ class Gobang {
          * @type {Array<Array<Piece>>}
          */
         this.form = new Proxy(
-            new Array(15) //新数组
+            new Array(this.y) //新数组
                 .fill(0)
                 .map(
                     () =>
                         new Proxy(
-                            new Array(15).fill(0).map(() => {
+                            new Array(this.x).fill(0).map(() => {
                                 const newPiece = new Piece();
                                 addCase({
                                     step: 0,
-                                    width: width / 15,
-                                    height: height / 15,
+                                    width: width / this.x,
+                                    height: height / this.y,
                                     x:
                                         width /
-                                        15 *
-                                        ((formIndex % 15 === 0
-                                            ? 15
-                                            : formIndex % 15) -
+                                        this.x *
+                                        ((formIndex % this.x === 0
+                                            ? this.x
+                                            : formIndex % this.x) -
                                             1),
                                     y:
                                         height /
-                                        15 *
-                                        (((formIndex - 1) / 15) >> 0),
+                                        this.y *
+                                        (((formIndex - 1) / this.y) >> 0),
                                     obj: newPiece
                                 });
                                 formIndex++;
@@ -154,6 +158,14 @@ class Gobang {
             dom = this.dom.getElementsByTagName("div")[dom];
         }
         if (this.gaming && !dom.step) {
+            Array.prototype.forEach.call(
+                this.dom.getElementsByTagName("div"),
+                e => {
+                    e.style.borderRadius = "0%";
+                    e.style.border = 0;
+                    e.style.lineHeight = `${this.width / this.x}px`;
+                }
+            );
             this.step++;
             dom.step = this.step;
             dom.innerText = this.step;
@@ -166,6 +178,9 @@ class Gobang {
             dom.style.backgroundImage = `url(${
                 this.players[(this.step - 1) % this.players.length].piece
             })`;
+            dom.style.borderRadius = "50%";
+            dom.style.border = `3px solid ${dom.style.color}`;
+            dom.style.lineHeight = `${this.width / this.x - 6}px`;
             this.AUDIO_DROP.currentTime = 0;
             this.AUDIO_DROP.play();
             if (this.test()) {
